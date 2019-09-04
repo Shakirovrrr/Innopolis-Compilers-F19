@@ -2,6 +2,13 @@ Delimiters:
     - Begin/end
     - {/}       это для комментов
     - */*       это тоже для комментов
+    - .
+    - ,
+    - (/)
+    - [/]
+    - : / ;
+    - '/'
+    - "/"
 
 Operators:    (http://5rik.ru/best/best-46557.php)
     - :=        (идентификатор :=  выражение;)
@@ -14,11 +21,11 @@ Operators:    (http://5rik.ru/best/best-46557.php)
     - repeat until
     - while do
 
-Keywords:           (http://key.mkprog.com/en/pascal/)
+Keywords:           (http://key.mkprog.com/en/pascal/)     (https://pas1.ru/pascaldictionary)
     прост по ссылке
 
-Identifiers:
-    
+Identifiers:            (https://wiki.freepascal.org/Identifiers)
+    тоже прост по ссылке
 
+Simple (integer) literals:      (https://pas1.ru/pascaldictionary)
 
-Simple (integer) literals:
