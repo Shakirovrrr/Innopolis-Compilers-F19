@@ -17,12 +17,31 @@ public class LexicalAnalysis {
 
     private HashMap<Integer, String> delimitersList = new HashMap<>() {
         {
-            put(1, "/");
+            put(1, "{");
         }
     };
     private HashMap<Integer, String> operatorsList = new HashMap<>() {
         {
             put(1, "+");
+            put(2, "-");
+            put(3, "*");
+            put(4, "/");
+            put(5, ":=");
+            put(6, "div");
+            put(7, "mod");
+            put(8, "and");
+            put(9, "or");
+            put(10, "not");
+            put(11, "xor");
+            put(12, "<>"); //not equal
+            put(13, "<");
+            put(14, ">");
+            put(15, "=");
+            put(16, "<=");
+            put(17, "=<");
+            put(18, ">=");
+            put(20, "=>");
+            put(21, "in");
         }
     };
     private HashMap<Integer, String> keywordsList = new HashMap<>() {
@@ -77,7 +96,7 @@ public class LexicalAnalysis {
         return null;
     }
 
-    public void performLexicalAnalysis( String path){
+    public void performLexicalAnalysis(String path) {
         //открыть файл
         // спарсить токены
         // по списку токенов пройти и проклассифицировать
