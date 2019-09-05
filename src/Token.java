@@ -4,8 +4,10 @@ public class Token {
     public int line;
     public int place_at_line;
 
-    private enum TokenType{
-        DELIMETER,
+    private LexicalAnalysis lexicalAnalysis = new LexicalAnalysis();
+
+    private enum TokenType {
+        DELIMITER,
         IDENTIFIER,
         LITERAL,
         KEYWORD,
@@ -13,6 +15,7 @@ public class Token {
         NOT_A_TYPE,
 
     }
+
     Token(String name, int line, int place_at_line) {
         this.line = line;
         this.name = name;
@@ -20,33 +23,52 @@ public class Token {
         this.type = TokenType.NOT_A_TYPE;
     }
 
-    private void setTokenType(TokenType tokenType ){
+    private void setTokenType(TokenType tokenType) {
         this.type = tokenType;
     }
 
     public Boolean isDelimiter() {
-        setTokenType(TokenType.DELIMETER);
-        return true;
+        if (this.lexicalAnalysis.getDelimitersList().containsValue(this.name)) {
+            setTokenType(TokenType.DELIMITER);
+            return true;
+        }
+        return false;
     }
 
     public Boolean isIdentifier() {
-        setTokenType(TokenType.IDENTIFIER);
-        return true;
+        if (true
+            //TODO  проверка, что может быть такой индентификатор в языке(начинается с подчеркивания или буквы, содержит
+            // буквы англ алфавита и не содержит определенных с имволов, которые тоже надо хафгачить в хешмепу)
+        ) {
+            setTokenType(TokenType.IDENTIFIER);
+            return true;
+        } else return false;
     }
 
     public Boolean isLiteral() {
-        setTokenType(TokenType.LITERAL);
-        return true;
+        if (true
+            //TODO проверка, что это инт, иначе фолз
+        ) {
+            setTokenType(TokenType.LITERAL);
+            return true;
+        } else return false;
     }
 
     public Boolean isOperator() {
-        setTokenType(TokenType.OPERATOR);
-        return true;
+        if (this.lexicalAnalysis.getOperatorsList().containsValue(this.name)) {
+            setTokenType(TokenType.OPERATOR);
+            return true;
+        }
+        return false;
+
     }
 
     public Boolean isKeyword() {
-        setTokenType(TokenType.KEYWORD);
-        return true;
+        if (this.lexicalAnalysis.getKeywordsList().containsValue(this.name)) {
+            setTokenType(TokenType.KEYWORD);
+            return true;
+        }
+        return false;
     }
 }
 

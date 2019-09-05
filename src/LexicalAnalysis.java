@@ -14,9 +14,10 @@ public class LexicalAnalysis {
     private ArrayList<Token> keywords;
     private ArrayList<Token> operators;
 
-    private HashMap<Integer, Character> delimitersList = new HashMap<>() {
+
+    private HashMap<Integer, String> delimitersList = new HashMap<>() {
         {
-            put(1, '/');
+            put(1, "/");
         }
     };
     private HashMap<Integer, String> operatorsList = new HashMap<>() {
@@ -30,6 +31,17 @@ public class LexicalAnalysis {
         }
     };
 
+    public HashMap<Integer, String> getDelimitersList() {
+        return delimitersList;
+    }
+
+    public HashMap<Integer, String> getKeywordsList() {
+        return keywordsList;
+    }
+
+    public HashMap<Integer, String> getOperatorsList() {
+        return operatorsList;
+    }
 
     public LexicalAnalysis() {
 
@@ -45,17 +57,17 @@ public class LexicalAnalysis {
         if (given.isDelimiter()) {
             delimiters.add(given);
 
-        } else if (given.isIdentifier()) {
-            identifiers.add(given);
+        } else if (given.isOperator()) {
+            operators.add(given);
+        } else if (given.isKeyword()) {
+            keywords.add(given);
 
         } else if (given.isLiteral()) {
             literals.add(given);
 
-        } else if (given.isKeyword()) {
-            keywords.add(given);
+        } else if (given.isIdentifier()) {
+            identifiers.add(given);
 
-        } else if (given.isOperator()) {
-            operators.add(given);
         }
     }
 
@@ -63,6 +75,14 @@ public class LexicalAnalysis {
     @Contract(pure = true)
     static ArrayList<Token> parser() {
         return null;
+    }
+
+    public void performLexicalAnalysis( String path){
+        //открыть файл
+        // спарсить токены
+        // по списку токенов пройти и проклассифицировать
+        // запринтить аутпут
+
     }
 
 
