@@ -47,6 +47,46 @@ public class LexicalAnalysis {
     private HashMap<Integer, String> keywordsList = new HashMap<>() {
         {
             put(1, "begin");
+            put(2,"boolean");
+            put(3,"break");
+            put(4, "byte");
+            put(5,"do");
+            put(6,"double");
+            put(7,"if");
+            put(8, "else");
+            put(9,"end");
+            put(10,"false");
+            put(11,"true");
+            put(12, "integer");
+            put(13,"longint");
+            put(17,"shortint");
+            put(14, "repeat");
+            put(15,"shr");
+            put(16,"single");
+            put(18,"then");
+            put(19,"until");
+            put(20,"word");
+            put(21, "program");;
+            put(22,"while");
+            put(23, "var");
+            put(24,"downto");
+            put(25,"label");
+            put(26,"record");
+            put(27,"with");
+            put(28,"procedure");
+            put(29,"goto");
+            put(30,"packed");
+            put(31,"const");
+            put(32,"type");
+            put(33,"case");
+            put(34,"function");
+            put(35, "to");
+            put(36, "of");
+            put(37,"for");
+            put(38, "array");
+            put(39, "file");
+            put(40, "set");
+
         }
     };
 
