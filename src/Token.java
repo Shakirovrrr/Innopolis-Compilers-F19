@@ -46,12 +46,13 @@ public class Token {
     }
 
     public Boolean isLiteral() {
-        if (true
-            //TODO проверка, что это инт, иначе фолз
-        ) {
+        try {
+            Integer.parseInt(this.name);
             setTokenType(TokenType.LITERAL);
             return true;
-        } else return false;
+        } catch (NumberFormatException ex) {
+            return false;
+        }
     }
 
     public Boolean isOperator() {
@@ -70,6 +71,8 @@ public class Token {
         }
         return false;
     }
+
+
 }
 
 
