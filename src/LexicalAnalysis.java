@@ -66,7 +66,7 @@ public class LexicalAnalysis {
             put(18,"then");
             put(19,"until");
             put(20,"word");
-            put(21, "program");;
+            put(21, "program");
             put(22,"while");
             put(23, "var");
             put(24,"downto");
@@ -141,7 +141,7 @@ public class LexicalAnalysis {
         // спарсить токены
         // по списку токенов пройти и проклассифицировать
         // запринтить аутпут
-
+        // вы восхитительны
     }
 
 
