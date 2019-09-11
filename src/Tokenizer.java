@@ -151,6 +151,10 @@ public class Tokenizer {
 
 	}
 
+	public List<String> getTokens() {
+		return tokens;
+	}
+
 	private void flushTokenBuf(StringBuilder tokenBuf) {
 		if (tokenBuf.length() > 0) {
 			tokens.add(tokenBuf.toString());
