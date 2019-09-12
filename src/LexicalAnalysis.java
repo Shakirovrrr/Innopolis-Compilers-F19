@@ -135,9 +135,40 @@ public class LexicalAnalysis {
 
 		List<String> tokens = tokenizer.getTokens();
 
+		System.out.println("Lexical analysis START\n");
+		LexicalAnalysis la = new LexicalAnalysis();
 		for (String tok : tokens) {
-			System.out.println(tok);
+			//System.out.println(tok);
+			Token token = new Token(tok,1,1);
+			la.classify(token);
 		}
+		System.out.println("Delimiters tokens: \n");
+		for (Token t: la.delimiters){
+			System.out.println(t.name + " " + t.type + " " + t.line + " "+ t.place_at_line);
+		}
+		System.out.println();
+		System.out.println("Literals tokens: \n");
+		for (Token t: la.literals){
+			System.out.println(t.name + " " + t.type + " " + t.line + " "+ t.place_at_line);
+		}
+		System.out.println();
+		System.out.println("Operators tokens: \n");
+		for (Token t: la.operators){
+			System.out.println(t.name + " " + t.type + " " + t.line + " "+ t.place_at_line);
+		}
+		System.out.println();
+		System.out.println("Keywords tokens: \n");
+		for (Token t: la.keywords){
+			System.out.println(t.name + " " + t.type + " " + t.line + " "+ t.place_at_line);
+		}
+		System.out.println();
+		System.out.println("Identifiers tokens: \n");
+		for (Token t: la.identifiers){
+			System.out.println(t.name + " " + t.type + " " + t.line + " "+ t.place_at_line);
+		}
+
+		System.out.println("Lexical analysis DONE");
+
 	}
 
 
