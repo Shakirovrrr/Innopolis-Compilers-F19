@@ -8,7 +8,8 @@ import java.util.List;
 
 public class Tokenizer {
 	private BufferedReader reader;
-	private List<String> tokens;
+	private List<RawToken> tokens;
+	private int nLine, nPlace;
 
 	public Tokenizer(InputStream stream) {
 		InputStreamReader inputReader = new InputStreamReader(stream);
@@ -22,6 +23,8 @@ public class Tokenizer {
 		char read;
 		StringBuilder tokenBuf = new StringBuilder();
 		states state = states.WORD, prevState = states.WORD;
+		nLine = 1;
+		nPlace = 1;
 
 		while (readByte != -1) {
 			read = (char) readByte;
@@ -59,6 +62,10 @@ public class Tokenizer {
 
 				if (read == ' ' || read == '\n') {
 					flushTokenBuf(tokenBuf);
+					if (read == '\n') {
+						nLine++;
+						nPlace = 1;
+					}
 					break;
 				}
 
@@ -76,7 +83,8 @@ public class Tokenizer {
 				if (";,{}[]+-".contains(String.valueOf(read))) {
 					state = states.OTHER;
 					flushTokenBuf(tokenBuf);
-					tokens.add(String.valueOf(read));
+					tokens.add(new RawToken(read, nLine, nPlace));
+					nPlace++;
 					break;
 				}
 
@@ -103,7 +111,8 @@ public class Tokenizer {
 						flushTokenBuf(tokenBuf);
 					} else {
 						flushTokenBuf(tokenBuf);
-						tokens.add(String.valueOf(read));
+						tokens.add(new RawToken(read, nLine, nPlace));
+						nPlace++;
 					}
 					break;
 				}
@@ -157,7 +166,8 @@ public class Tokenizer {
 						flushTokenBuf(tokenBuf);
 					} else {
 						flushTokenBuf(tokenBuf);
-						tokens.add(String.valueOf(read));
+						tokens.add(new RawToken(read, nLine, nPlace));
+						nPlace++;
 					}
 					break;
 				}
@@ -197,14 +207,15 @@ public class Tokenizer {
 		flushTokenBuf(tokenBuf);
 	}
 
-	public List<String> getTokens() {
+	public List<RawToken> getTokens() {
 		return tokens;
 	}
 
 	private void flushTokenBuf(StringBuilder tokenBuf) {
 		if (tokenBuf.length() > 0) {
-			tokens.add(tokenBuf.toString());
+			tokens.add(new RawToken(tokenBuf.toString(), nLine, nPlace));
 			tokenBuf.setLength(0);
+			nPlace++;
 		}
 	}
 

@@ -2,11 +2,13 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.*;
 
 
 public class LexicalAnalysis {
@@ -114,6 +116,11 @@ public class LexicalAnalysis {
         operators = new ArrayList<>();
     }
 
+	@Nullable
+	@Contract(pure = true)
+	static ArrayList<Token> parser() {
+		return null;
+	}
 
     public static void main(String[] args) throws IOException {
         //example  of tokenizator usage
@@ -125,7 +132,7 @@ public class LexicalAnalysis {
 		tokenizer.tokenize();
 		fromFile.close();
 
-		List<String> tokens = tokenizer.getTokens();
+		List<RawToken> tokens = tokenizer.getTokens();
 
 		System.out.println("Lexical analysis START\n");
 		LexicalAnalysis la = new LexicalAnalysis();
@@ -133,6 +140,8 @@ public class LexicalAnalysis {
 			//System.out.println(tok);
 			Token token = new Token(tok,1,1);
 			la.classify(token);
+		for (RawToken tok : tokens) {
+			System.out.printf("[%d, %d] %s\n", tok.line, tok.place, tok.val);
 		}
 		*/
 		LexicalAnalysis la = new LexicalAnalysis();
@@ -170,12 +179,12 @@ public class LexicalAnalysis {
         tokenizer.tokenize();
         fromFile.close();
 
-        List<String> tokens = tokenizer.getTokens();
+        List<RawToken> tokens = tokenizer.getTokens();
 
         System.out.println("Lexical analysis START\n");
         LexicalAnalysis la = new LexicalAnalysis();
-        for (String tok : tokens) {
-            Token token = new Token(tok, 1, 1);
+        for (RawToken tok : tokens) {
+            Token token = new Token(tok.val, 1, 1);
             la.classify(token);
         }
         System.out.println("Delimiters tokens: \n");
