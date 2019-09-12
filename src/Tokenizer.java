@@ -73,7 +73,7 @@ public class Tokenizer {
 					break;
 				}
 
-				if (";,{}+-".contains(String.valueOf(read))) {
+				if (";,{}[]+-".contains(String.valueOf(read))) {
 					state = states.OTHER;
 					flushTokenBuf(tokenBuf);
 					tokens.add(String.valueOf(read));
