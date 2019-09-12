@@ -119,10 +119,10 @@ public class LexicalAnalysis {
 		tokenizer.tokenize();
 		fromFile.close();
 
-		List<String> tokens = tokenizer.getTokens();
+		List<RawToken> tokens = tokenizer.getTokens();
 
-		for (String tok : tokens) {
-			System.out.println(tok);
+		for (RawToken tok : tokens) {
+			System.out.printf("[%d, %d] %s\n", tok.line, tok.place, tok.val);
 		}
 	}
 
