@@ -26,6 +26,37 @@ public class Tokenizer {
 		while (readByte != -1) {
 			read = (char) readByte;
 			do {
+				if (read == '\'') {
+					if (state == states.STRING1) {
+						state = states.WORD;
+						tokenBuf.append(read);
+						flushTokenBuf(tokenBuf);
+					} else {
+						flushTokenBuf(tokenBuf);
+						state = states.STRING1;
+						tokenBuf.append(read);
+					}
+					break;
+				}
+
+				if (read == '\"') {
+					if (state == states.STRING2) {
+						state = states.WORD;
+						tokenBuf.append(read);
+						flushTokenBuf(tokenBuf);
+					} else {
+						flushTokenBuf(tokenBuf);
+						state = states.STRING2;
+						tokenBuf.append(read);
+					}
+					break;
+				}
+
+				if (state == states.STRING1 || state == states.STRING2) {
+					tokenBuf.append(read);
+					break;
+				}
+
 				if (read == ' ' || read == '\n') {
 					flushTokenBuf(tokenBuf);
 					break;
@@ -134,6 +165,20 @@ public class Tokenizer {
 				if (read == '/') {
 					state = states.DIV;
 					if (prevState == states.DIV) {
+						state = states.COMM_LINE;
+						tokenBuf.append(read);
+						flushTokenBuf(tokenBuf);
+					} else {
+						flushTokenBuf(tokenBuf);
+						tokenBuf.append(read);
+					}
+					break;
+				}
+
+				if (read == '.') {
+					state = states.PERIOD;
+					if (prevState == states.PERIOD) {
+						state = states.RANGE;
 						tokenBuf.append(read);
 						flushTokenBuf(tokenBuf);
 					} else {
@@ -149,6 +194,7 @@ public class Tokenizer {
 			prevState = state;
 		}
 
+		flushTokenBuf(tokenBuf);
 	}
 
 	public List<String> getTokens() {
@@ -163,10 +209,11 @@ public class Tokenizer {
 	}
 
 	private enum states {
-		WORD, ASSIGN, COLON,
+		WORD, STRING1, STRING2,
+		COLON, ASSIGN, PERIOD, RANGE,
 		EQ, NE, LT, LE, GT, GE, MUL, DIV,
 		BR_OPEN, BR_CLOSE,
-		COMM_OPEN, COMM_CLOSE,
+		COMM_OPEN, COMM_CLOSE, COMM_LINE,
 		OTHER
 	}
 }
