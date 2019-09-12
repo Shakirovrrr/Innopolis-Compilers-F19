@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.*;
 
 
 public class LexicalAnalysis {
@@ -19,6 +20,7 @@ public class LexicalAnalysis {
 	private ArrayList<Token> keywords;
 	private ArrayList<Token> operators;
 
+    private ArrayList<Token> nonSupportedTokens;
 
 	private HashMap<Integer, String> delimitersList = new HashMap<>() {
 		{
@@ -95,14 +97,26 @@ public class LexicalAnalysis {
 		}
 	};
 
-	public LexicalAnalysis() {
+    public HashMap<Integer, String> getDelimitersList() {
+        return delimitersList;
+    }
 
-		delimiters = new ArrayList<>();
-		identifiers = new ArrayList<>();
-		literals = new ArrayList<>();
-		keywords = new ArrayList<>();
-		operators = new ArrayList<>();
-	}
+    public HashMap<Integer, String> getKeywordsList() {
+        return keywordsList;
+    }
+
+    public HashMap<Integer, String> getOperatorsList() {
+        return operatorsList;
+    }
+
+    public LexicalAnalysis() {
+
+        delimiters = new ArrayList<>();
+        identifiers = new ArrayList<>();
+        literals = new ArrayList<>();
+        keywords = new ArrayList<>();
+        operators = new ArrayList<>();
+    }
 
 	@Nullable
 	@Contract(pure = true)
@@ -126,17 +140,6 @@ public class LexicalAnalysis {
 		}
 	}
 
-	public HashMap<Integer, String> getDelimitersList() {
-		return delimitersList;
-	}
-
-	public HashMap<Integer, String> getKeywordsList() {
-		return keywordsList;
-	}
-
-	public HashMap<Integer, String> getOperatorsList() {
-		return operatorsList;
-	}
 
 	private void classify(@NotNull Token given) {
 
@@ -154,8 +157,10 @@ public class LexicalAnalysis {
 		} else if (given.isIdentifier()) {
 			identifiers.add(given);
 
-		}
-	}
+        } else {
+            nonSupportedTokens.add(given);
+        }
+    }
 
 	public void performLexicalAnalysis(String path) {
 		//открыть файл
