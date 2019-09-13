@@ -18,6 +18,7 @@ public class LexicalAnalysis {
     private ArrayList<Token> literals;
     private ArrayList<Token> keywords;
     private ArrayList<Token> operators;
+    private ArrayList<Token> nonSupportedTokens;
 
     private HashMap<Integer, String> delimitersList = new HashMap<>() {
         {
@@ -178,9 +179,13 @@ public class LexicalAnalysis {
 
         } else if (given.isIdentifier()) {
             identifiers.add(given);
-    }}
 
-    public void performLexicalAnalysis (String path) throws IOException {
+        } else {
+            nonSupportedTokens.add(given);
+        }
+    }
+
+    public void performLexicalAnalysis(String path) throws IOException {
         //Open file
         InputStream fromFile = new FileInputStream(path);
         Tokenizer tokenizer = new Tokenizer(fromFile);
