@@ -24,6 +24,7 @@ public class Main {
 			System.out.printf("[%d, %d] %s\n", tok.line, tok.place, tok.val);
 		}
 		*/
+
         System.out.println("Input the name of .pas file (like 'Name.pas') or press Enter to watch a sample file: ");
         Scanner in = new Scanner(System.in);
         String inputFile = in.nextLine();

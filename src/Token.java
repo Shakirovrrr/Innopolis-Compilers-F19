@@ -36,14 +36,21 @@ public class Token {
     }
 
     private Boolean consistLegal() {
-        Boolean result = false;
-        if ((Character.toString(this.name.charAt(0)).compareTo("_") == 0) || (this.name.matches("^[A-Za-z]+$"))) {
-            result = true;
+        char[] temp = this.name.toCharArray();
+        for (int i = 0; i < temp.length; i++) {
+            if (!((int) temp[i] == (int) '_' ||
+                    (65 <= (int) temp[i]) && ((int) temp[i] <= 90) ||
+                    (97 <= (int) temp[i]) && (int) temp[i] <= 122)) {
+                return false;
+            } else {
+                if (this.lexicalAnalysis.getOperatorsList().containsValue(String.valueOf(temp[i])) ||
+                        this.lexicalAnalysis.getDelimitersList().containsValue(String.valueOf(temp[i]))) {
+                    return false;
+                }
+            }
         }
-        if (this.name.matches("(.*).(.*)") || this.name.matches("(.*),(.*)") || this.name.matches("(.*) (.*)") || this.name.matches("(.*)'(.*)") || this.name.matches("(.*):(.*)") || this.name.matches("(.*);(.*)") || this.name.matches("(.*)!(.*)")) {
-            result = false;
-        }
-        return result;
+
+        return true;
     }
 
     public Boolean isIdentifier() {

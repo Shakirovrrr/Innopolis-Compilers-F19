@@ -18,6 +18,16 @@ public class LexicalAnalysis {
     private ArrayList<Token> operators;
     private ArrayList<Token> nonSupportedTokens;
 
+    public LexicalAnalysis() {
+
+        delimiters = new ArrayList<>();
+        identifiers = new ArrayList<>();
+        literals = new ArrayList<>();
+        keywords = new ArrayList<>();
+        operators = new ArrayList<>();
+        nonSupportedTokens = new ArrayList<>();
+    }
+
     private HashMap<Integer, String> delimitersList = new HashMap<>() {
         {
             put(1, "{");
@@ -111,6 +121,7 @@ public class LexicalAnalysis {
         }
     };
 
+
     public HashMap<Integer, String> getDelimitersList() {
         return delimitersList;
     }
@@ -123,15 +134,6 @@ public class LexicalAnalysis {
         return operatorsList;
     }
 
-    public LexicalAnalysis() {
-
-        delimiters = new ArrayList<>();
-        identifiers = new ArrayList<>();
-        literals = new ArrayList<>();
-        keywords = new ArrayList<>();
-        operators = new ArrayList<>();
-        nonSupportedTokens = new ArrayList<>();
-    }
 
 
     private void classify(@NotNull Token given) {
@@ -171,8 +173,10 @@ public class LexicalAnalysis {
         printWriter.println("\n\'" + inputPath + "\'" + " to be analysed\n");
         printWriter.println("Lexical analysis START\n");
         System.out.println("\n\'" + inputPath + "\'" + " to be analysed\n");
+
         System.out.println("Lexical analysis START");
         printWriter.println("\nToken | line | place at line\n\n");
+
         LexicalAnalysis la = new LexicalAnalysis();
         for (RawToken tok : tokens) {
             Token token = new Token(tok.val, tok.line, tok.place);
@@ -212,11 +216,6 @@ public class LexicalAnalysis {
         System.out.println("Lexical analysis DONE \n\nlook for the results in \'" + outputPath + "\'");
         printWriter.close();
 
-        //открыть файл
-        // спарсить токены
-        // по списку токенов пройти и проклассифицировать
-        // запринтить аутпут
-        // вы восхитительны
     }
 
 }
