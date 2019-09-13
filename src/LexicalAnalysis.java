@@ -135,7 +135,6 @@ public class LexicalAnalysis {
     }
 
 
-
     private void classify(@NotNull Token given) {
 
         if (given.isDelimiter()) {
@@ -175,7 +174,7 @@ public class LexicalAnalysis {
         System.out.println("\n\'" + inputPath + "\'" + " to be analysed\n");
 
         System.out.println("Lexical analysis START");
-        printWriter.println("\nToken | line | place at line\n\n");
+        printWriter.println("\nline | place at line| Token \n\n");
 
         LexicalAnalysis la = new LexicalAnalysis();
         for (RawToken tok : tokens) {
@@ -184,32 +183,41 @@ public class LexicalAnalysis {
         }
         printWriter.println("Delimiters tokens: \n");
         for (Token t : la.delimiters) {
-            printWriter.println(t.name + " " + t.type + " " + t.line + " " + t.place_at_line);
+            printWriter.println(t.line + " " + t.place_at_line + " " + t.name);
+            //printWriter.println(t.line +" " + t.place_at_line + " " + t.name + " " + t.type);
         }
         printWriter.println();
         printWriter.println("Literals tokens: \n");
         for (Token t : la.literals) {
-            printWriter.println(t.name + " " + t.type + " " + t.line + " " + t.place_at_line);
+            printWriter.println(t.line + " " + t.place_at_line + " " + t.name);
+
+            //printWriter.println(t.line +" " + t.place_at_line + " " + t.name + " " + t.type);
         }
         printWriter.println();
         printWriter.println("Operators tokens: \n");
         for (Token t : la.operators) {
-            printWriter.println(t.name + " " + t.type + " " + t.line + " " + t.place_at_line);
+            //printWriter.println(t.line +" " + t.place_at_line + " " + t.name + " " + t.type);
+            printWriter.println(t.line + " " + t.place_at_line + " " + t.name);
+
         }
         printWriter.println();
         printWriter.println("Keywords tokens: \n");
         for (Token t : la.keywords) {
-            printWriter.println(t.name + " " + t.type + " " + t.line + " " + t.place_at_line);
+
+            printWriter.println(t.line + " " + t.place_at_line + " " + t.name);
+            //printWriter.println(t.line +" " + t.place_at_line + " " + t.name + " " + t.type);
         }
         printWriter.println();
         printWriter.println("Identifiers tokens: \n");
         for (Token t : la.identifiers) {
-            printWriter.println(t.name + " " + t.type + " " + t.line + " " + t.place_at_line);
+            printWriter.println(t.line + " " + t.place_at_line + " " + t.name);
+
+//            printWriter.println(t.line +" " + t.place_at_line + " " + t.name + " " + t.type);
         }
         printWriter.println();
         printWriter.println("Not defined tokens: \n");
         for (Token t : la.nonSupportedTokens) {
-            printWriter.println(t.name + " " + t.type + " " + t.line + " " + t.place_at_line);
+            printWriter.println(t.line + " " + t.place_at_line + " " + t.name);
         }
 
         printWriter.println("\nLexical analysis DONE");
