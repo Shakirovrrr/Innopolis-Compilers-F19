@@ -21,6 +21,19 @@ public class LexicalAnalysis {
     private HashMap<Integer, String> delimitersList = new HashMap<>() {
         {
             put(1, "{");
+            put(2, ";");
+            put(3, ".");
+            put(4, "'");
+            put(5, "(");
+            put(6, "[");
+            put(7, "(.");
+            put(8, "(*");
+            put(9, ":");
+            put(10, "}");
+            put(11, ")");
+            put(12, "]");
+            put(13, ".)");
+            put(14, "*)");
         }
     };
     private HashMap<Integer, String> operatorsList = new HashMap<>() {
@@ -89,6 +102,7 @@ public class LexicalAnalysis {
             put(38, "array");
             put(39, "file");
             put(40, "set");
+            put(41, "file");
 
         }
     };

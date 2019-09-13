@@ -35,10 +35,19 @@ public class Token {
         return false;
     }
 
+    private Boolean consistLegal() {
+        Boolean result = false;
+        if ((Character.toString(this.name.charAt(0)).compareTo("_") == 0) || (this.name.matches("^[A-Za-z]+$"))) {
+            result = true;
+        }
+        if (this.name.matches("(.*).(.*)") || this.name.matches("(.*),(.*)") || this.name.matches("(.*) (.*)") || this.name.matches("(.*)'(.*)") || this.name.matches("(.*):(.*)") || this.name.matches("(.*);(.*)") || this.name.matches("(.*)!(.*)")) {
+            result = false;
+        }
+        return result;
+    }
+
     public Boolean isIdentifier() {
-        if (true
-            //TODO  проверка, что может быть такой индентификатор в языке(начинается с подчеркивания или буквы, содержит
-            // буквы англ алфавита и не содержит определенных с имволов, которые тоже надо хафгачить в хешмепу)
+        if (this.consistLegal()
         ) {
             setTokenType(TokenType.IDENTIFIER);
             return true;
