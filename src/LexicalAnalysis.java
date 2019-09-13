@@ -2,13 +2,11 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.ByteArrayInputStream;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Scanner;
 
 
 public class LexicalAnalysis {
@@ -114,13 +112,14 @@ public class LexicalAnalysis {
         literals = new ArrayList<>();
         keywords = new ArrayList<>();
         operators = new ArrayList<>();
+        nonSupportedTokens = new ArrayList<>();
     }
 
-	@Nullable
-	@Contract(pure = true)
-	static ArrayList<Token> parser() {
-		return null;
-	}
+    @Nullable
+    @Contract(pure = true)
+    static ArrayList<Token> parser() {
+        return null;
+    }
 
     public static void main(String[] args) throws IOException {
         //example  of tokenizator usage
@@ -144,8 +143,14 @@ public class LexicalAnalysis {
 			System.out.printf("[%d, %d] %s\n", tok.line, tok.place, tok.val);
 		}
 		*/
-		LexicalAnalysis la = new LexicalAnalysis();
-		la.performLexicalAnalysis("SamplePascal.pas");
+        System.out.println("Input the name of .pas file (like 'Name.pas') or press Enter to watch a sample file: ");
+        Scanner in = new Scanner(System.in);
+        String inputFile = in.nextLine();
+        LexicalAnalysis la = new LexicalAnalysis();
+        if (inputFile.isEmpty()) {
+            inputFile = "SamplePascal.pas";
+        }
+        la.performLexicalAnalysis(inputFile, "Output.txt");
 
     }
 
@@ -171,9 +176,9 @@ public class LexicalAnalysis {
         }
     }
 
-    public void performLexicalAnalysis(String path) throws IOException {
+    public void performLexicalAnalysis(String inputPath, String outputPath) throws IOException {
         //Open file
-        InputStream fromFile = new FileInputStream(path);
+        InputStream fromFile = new FileInputStream(inputPath);
         Tokenizer tokenizer = new Tokenizer(fromFile);
 
         tokenizer.tokenize();
@@ -181,38 +186,52 @@ public class LexicalAnalysis {
 
         List<RawToken> tokens = tokenizer.getTokens();
 
-        System.out.println("Lexical analysis START\n");
+        FileWriter fileWriter = new FileWriter(outputPath);
+        PrintWriter printWriter = new PrintWriter(fileWriter);
+
+        printWriter.println("\n\'" + inputPath + "\'" + " to be analysed\n");
+        printWriter.println("Lexical analysis START\n");
+        System.out.println("\n\'" + inputPath + "\'" + " to be analysed\n");
+        System.out.println("Lexical analysis START");
+        printWriter.println("\nToken | line | place at line\n\n");
         LexicalAnalysis la = new LexicalAnalysis();
         for (RawToken tok : tokens) {
-            Token token = new Token(tok.val, 1, 1);
+            Token token = new Token(tok.val, tok.line, tok.place);
             la.classify(token);
         }
-        System.out.println("Delimiters tokens: \n");
+        printWriter.println("Delimiters tokens: \n");
         for (Token t : la.delimiters) {
-            System.out.println(t.name + " " + t.type + " " + t.line + " " + t.place_at_line);
+            printWriter.println(t.name + " " + t.type + " " + t.line + " " + t.place_at_line);
         }
-        System.out.println();
-        System.out.println("Literals tokens: \n");
+        printWriter.println();
+        printWriter.println("Literals tokens: \n");
         for (Token t : la.literals) {
-            System.out.println(t.name + " " + t.type + " " + t.line + " " + t.place_at_line);
+            printWriter.println(t.name + " " + t.type + " " + t.line + " " + t.place_at_line);
         }
-        System.out.println();
-        System.out.println("Operators tokens: \n");
+        printWriter.println();
+        printWriter.println("Operators tokens: \n");
         for (Token t : la.operators) {
-            System.out.println(t.name + " " + t.type + " " + t.line + " " + t.place_at_line);
+            printWriter.println(t.name + " " + t.type + " " + t.line + " " + t.place_at_line);
         }
-        System.out.println();
-        System.out.println("Keywords tokens: \n");
+        printWriter.println();
+        printWriter.println("Keywords tokens: \n");
         for (Token t : la.keywords) {
-            System.out.println(t.name + " " + t.type + " " + t.line + " " + t.place_at_line);
+            printWriter.println(t.name + " " + t.type + " " + t.line + " " + t.place_at_line);
         }
-        System.out.println();
-        System.out.println("Identifiers tokens: \n");
+        printWriter.println();
+        printWriter.println("Identifiers tokens: \n");
         for (Token t : la.identifiers) {
-            System.out.println(t.name + " " + t.type + " " + t.line + " " + t.place_at_line);
+            printWriter.println(t.name + " " + t.type + " " + t.line + " " + t.place_at_line);
+        }
+        printWriter.println();
+        printWriter.println("Not defined tokens: \n");
+        for (Token t : la.nonSupportedTokens) {
+            printWriter.println(t.name + " " + t.type + " " + t.line + " " + t.place_at_line);
         }
 
-        System.out.println("Lexical analysis DONE");
+        printWriter.println("\nLexical analysis DONE");
+        System.out.println("Lexical analysis DONE \n\nlook for the results in \'" + outputPath + "\'");
+        printWriter.close();
 
         //открыть файл
         // спарсить токены
@@ -220,4 +239,5 @@ public class LexicalAnalysis {
         // запринтить аутпут
         // вы восхитительны
     }
+
 }
