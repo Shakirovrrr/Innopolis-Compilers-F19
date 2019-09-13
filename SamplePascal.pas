@@ -1,3 +1,6 @@
+{ Taken from https://www.tutorialspoint.com/pascal_programming_examples/ }
+{ Direct link to source: http://tpcg.io/cBu2Nw }
+
 program MorseCoding;
 
 function checkUserInput(userString: string): boolean;
