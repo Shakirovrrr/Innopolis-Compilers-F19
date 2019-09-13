@@ -19,15 +19,15 @@ public class Tokenizer {
 	}
 
 	public void tokenize() throws IOException {
-		int readByte = reader.read();
+		int cursor = reader.read();
 		char read;
 		StringBuilder tokenBuf = new StringBuilder();
 		states state = states.WORD, prevState = states.WORD;
 		nLine = 1;
 		nPlace = 1;
 
-		while (readByte != -1) {
-			read = (char) readByte;
+		while (cursor != -1) {
+			read = (char) cursor;
 			do {
 				if (read == '\'') {
 					if (state == states.STRING1) {
@@ -69,10 +69,16 @@ public class Tokenizer {
 					break;
 				}
 
-				if (Character.isLetterOrDigit(read) || read == '_') {
+				if (Character.isLetter(read) || read == '_') {
 					state = states.WORD;
 
-					if (prevState != states.WORD) {
+					if (prevState == states.NUMBER) {
+						if (tokenBuf.length() > 1 && tokenBuf.charAt(0) == '-') {
+							tokenBuf.deleteCharAt(0);
+							tokens.add(new RawToken('-', nLine, nPlace));
+							nPlace++;
+						}
+					} else if (prevState != states.WORD) {
 						flushTokenBuf(tokenBuf);
 					}
 
@@ -80,7 +86,28 @@ public class Tokenizer {
 					break;
 				}
 
-				if (";,{}[]+-".contains(String.valueOf(read))) {
+				if (Character.isDigit(read)) {
+					if (prevState == states.WORD || prevState == states.NUMBER) {
+						tokenBuf.append(read);
+					} else if (prevState == states.SUB) {
+						state = states.NUMBER;
+						tokenBuf.append(read);
+					} else {
+						state = states.NUMBER;
+						flushTokenBuf(tokenBuf);
+						tokenBuf.append(read);
+					}
+					break;
+				}
+
+				if (read == '-') {
+					state = states.SUB;
+					flushTokenBuf(tokenBuf);
+					tokenBuf.append(read);
+					break;
+				}
+
+				if (";,{}[]+".contains(String.valueOf(read))) {
 					state = states.OTHER;
 					flushTokenBuf(tokenBuf);
 					tokens.add(new RawToken(read, nLine, nPlace));
@@ -200,7 +227,7 @@ public class Tokenizer {
 
 			} while (false);
 
-			readByte = reader.read();
+			cursor = reader.read();
 			prevState = state;
 		}
 
@@ -220,9 +247,9 @@ public class Tokenizer {
 	}
 
 	private enum states {
-		WORD, STRING1, STRING2,
+		WORD, STRING1, STRING2, NUMBER,
 		COLON, ASSIGN, PERIOD, RANGE,
-		EQ, NE, LT, LE, GT, GE, MUL, DIV,
+		EQ, NE, LT, LE, GT, GE, MUL, DIV, SUB,
 		BR_OPEN, BR_CLOSE,
 		COMM_OPEN, COMM_CLOSE, COMM_LINE,
 		OTHER
