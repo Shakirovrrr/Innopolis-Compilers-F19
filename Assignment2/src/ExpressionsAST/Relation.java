@@ -1,7 +1,7 @@
 package ExpressionsAST;
 
-public class Relation extends Binary {
-	private Term left, right;
+class Relation extends Binary {
+	//private Term left, right;
 	private Op op;
 
 	public Relation(Term left, Op op, Term right) {

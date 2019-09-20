@@ -1,8 +1,8 @@
 package ExpressionsAST;
 
-public class Term extends Binary {
-	private Factor left;
-	private Term right;
+class Term extends Binary {
+	//private Factor left;
+	//private Term right;
 	private Op op;
 
 	public Term(Factor left, Op op, Term right) {

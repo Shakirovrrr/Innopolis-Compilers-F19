@@ -1,8 +1,8 @@
 package ExpressionsAST;
 
-public class Factor extends Binary {
-	private Primary left;
-	private Factor right;
+class Factor extends Binary {
+	//private Primary left;
+	//private Factor right;
 
 	public Factor(Primary left, Factor right) {
 		this.left = left;
