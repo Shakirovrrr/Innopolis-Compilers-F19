@@ -4,6 +4,7 @@ public class Parenthesized extends Primary {
 	private Expression expr;
 
 	public Parenthesized(Expression expr) {
+		super(null);
 		this.expr = expr;
 	}
 
