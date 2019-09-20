@@ -11,11 +11,14 @@ public class Factor extends Binary {
 
 	public Factor(Primary primary) {
 		this.left = primary;
-		this.right = new Factor(new Primary(1));
 	}
 
 	@Override
 	public long eval() {
-		return left.eval() * right.eval();
+		if (right != null) {
+			return left.eval() * right.eval();
+		} else {
+			return left.eval();
+		}
 	}
 }
