@@ -7,8 +7,8 @@ class Main {
 		String expr = "1 + (26 - 98) * 15 + 777";
 
 		ASTBuilder builder = new ASTBuilder(expr);
-		Expression root = builder.build();
+		Expression tree = builder.build();
 
-		System.out.println(root.eval());
+		System.out.println(tree.eval());
 	}
 }
