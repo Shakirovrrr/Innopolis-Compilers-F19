@@ -17,11 +17,57 @@ public class ASTBuilder {
 		this.expression = expression;
 	}
 
-	private void generateEvalQueue() {
-		if (evalQueue != null) {
-			return;
+	public Queue<String> getEvalQueue() throws InvalidExpressionException {
+		if (evalQueue == null) {
+			generateEvalQueue();
 		}
 
+		return evalQueue;
+	}
+
+	public Expression build() throws InvalidExpressionException {
+		generateEvalQueue();
+
+		Stack<Expression> computeStack = new Stack<>();
+		char oper;
+		int intermediateResult;
+
+		String item;
+		while (!evalQueue.isEmpty()) {
+			item = evalQueue.poll();
+
+			while (!isOper(item)) {
+				computeStack.push(Number.parseInt(item));
+				item = evalQueue.remove();
+			}
+			oper = item.charAt(0);
+
+			computeStack.push(bind(computeStack.pop(), oper, computeStack.pop()));
+		}
+
+		return computeStack.pop();
+	}
+
+	private Expression bind(Expression left, char oper, Expression right) {
+		switch (oper) {
+			case '<':
+				return new Relation(left, Relation.Op.LESS, right);
+			case '>':
+				return new Relation(left, Relation.Op.GREATER, right);
+			case '=':
+				return new Relation(left, Relation.Op.EQUAL, right);
+			case '+':
+				return new Term(left, Term.Op.ADD, right);
+			case '-':
+				return new Term(right, Term.Op.SUB, left);
+			case '*':
+				return new Factor(left, right);
+			default:
+				return null;
+		}
+	}
+
+	private void generateEvalQueue() throws InvalidExpressionException {
 		Stack<Character> operators = new Stack<>();
 		evalQueue = new LinkedList<>();
 
@@ -39,9 +85,49 @@ public class ASTBuilder {
 				continue;
 			}
 
-			while (!operators.empty()) {
-				//
+			if (isOper(token)) {
+				while (!operators.empty()) {
+					if (isOper(operators.peek())) {
+						if (operPriority(token) <= operPriority(operators.peek())) {
+							evalQueue.add(operators.pop().toString());
+						} else break;
+					} else break;
+				}
+				operators.push(token.charAt(0));
+
+				continue;
 			}
+
+			if (token.charAt(0) == '(') {
+				operators.push(token.charAt(0));
+				continue;
+			}
+
+			if (token.charAt(0) == ')') {
+				boolean handled = false;
+
+				while (!operators.empty()) {
+					if (operators.peek() != '(') {
+						evalQueue.add(operators.pop().toString());
+					} else {
+						operators.pop();
+						handled = true;
+						break;
+					}
+				}
+
+				if (!handled) {
+					throw new InvalidExpressionException("Missing opening bracket or excess closer bracket.");
+				}
+			}
+
+		}
+
+		while (!operators.empty()) {
+			if (operators.peek() == '(') {
+				throw new InvalidExpressionException("Excess opening bracket or missing closing bracket.");
+			}
+			evalQueue.add(operators.pop().toString());
 		}
 	}
 
@@ -61,6 +147,10 @@ public class ASTBuilder {
 		}
 	}
 
+	private int operPriority(CharSequence seq) {
+		return operPriority(seq.charAt(0));
+	}
+
 	private boolean isNumeric(String str) {
 		try {
 			Integer.parseInt(str);
@@ -68,5 +158,13 @@ public class ASTBuilder {
 			return false;
 		}
 		return true;
+	}
+
+	private boolean isOper(CharSequence str) {
+		return "<>=+-*".contains(str);
+	}
+
+	private boolean isOper(char c) {
+		return isOper(String.valueOf(c));
 	}
 }
