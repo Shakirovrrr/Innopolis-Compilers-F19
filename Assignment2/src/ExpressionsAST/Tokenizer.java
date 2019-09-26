@@ -8,8 +8,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 class Tokenizer {
-	private BufferedReader reader;
-	private List<String> tokens;
+	private final BufferedReader reader;
+	private final List<String> tokens;
 
 	Tokenizer(InputStream input) {
 		InputStreamReader inputReader = new InputStreamReader(input);
@@ -25,6 +25,7 @@ class Tokenizer {
 
 		while (readByte != -1) {
 			read = (char) readByte;
+			//noinspection ConstantConditions
 			do {
 				if (read == ' ' || read == '\n') {
 					flushTokenBuf(tokenBuf);
@@ -43,7 +44,7 @@ class Tokenizer {
 				}
 
 				if ("+-*=<>()".contains(String.valueOf(read))) {
-					state = States.OPER;
+					state = States.OPERATOR;
 					flushTokenBuf(tokenBuf);
 					tokenBuf.append(read);
 					break;
@@ -69,6 +70,6 @@ class Tokenizer {
 	}
 
 	private enum States {
-		NUM, OPER
+		NUM, OPERATOR
 	}
 }

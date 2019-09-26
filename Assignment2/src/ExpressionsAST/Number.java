@@ -1,8 +1,9 @@
 package ExpressionsAST;
 
 class Number extends Primary {
-	private long val;
+	private final long val;
 
+	@SuppressWarnings("WeakerAccess")
 	Number(long val) {
 		this.val = val;
 	}

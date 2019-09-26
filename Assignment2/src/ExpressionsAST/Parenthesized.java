@@ -1,7 +1,7 @@
 package ExpressionsAST;
 
 class Parenthesized extends Primary {
-	private Expression expr;
+	private final Expression expr;
 
 	public Parenthesized(Expression expr) {
 		this.expr = expr;

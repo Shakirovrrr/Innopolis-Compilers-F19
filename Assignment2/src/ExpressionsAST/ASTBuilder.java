@@ -8,7 +8,7 @@ import java.util.Queue;
 import java.util.Stack;
 
 public class ASTBuilder {
-	private String expression;
+	private final String expression;
 	private Queue<String> evalQueue;
 
 	public ASTBuilder(String expression) {
@@ -19,27 +19,26 @@ public class ASTBuilder {
 		generateEvalQueue();
 
 		Stack<Expression> computeStack = new Stack<>();
-		char oper;
-		int intermediateResult;
+		char operator;
 
 		String item;
 		while (!evalQueue.isEmpty()) {
 			item = evalQueue.poll();
 
-			while (!isOper(item)) {
+			while (!isOperator(item)) {
 				computeStack.push(Number.parseInt(item));
 				item = evalQueue.remove();
 			}
-			oper = item.charAt(0);
+			operator = item.charAt(0);
 
-			computeStack.push(bind(computeStack.pop(), oper, computeStack.pop()));
+			computeStack.push(bind(computeStack.pop(), operator, computeStack.pop()));
 		}
 
 		return computeStack.pop();
 	}
 
-	private Expression bind(Expression left, char oper, Expression right) {
-		switch (oper) {
+	private Expression bind(Expression left, char operator, Expression right) {
+		switch (operator) {
 			case '<':
 				return new Relation(left, Relation.Op.LESS, right);
 			case '>':
@@ -75,10 +74,10 @@ public class ASTBuilder {
 				continue;
 			}
 
-			if (isOper(token)) {
+			if (isOperator(token)) {
 				while (!operators.empty()) {
-					if (isOper(operators.peek())) {
-						if (operPriority(token) <= operPriority(operators.peek())) {
+					if (isOperator(operators.peek())) {
+						if (operatorPriority(token) <= operatorPriority(operators.peek())) {
 							evalQueue.add(operators.pop().toString());
 						} else break;
 					} else break;
@@ -121,8 +120,8 @@ public class ASTBuilder {
 		}
 	}
 
-	private int operPriority(char oper) {
-		switch (oper) {
+	private int operatorPriority(char operator) {
+		switch (operator) {
 			case '<':
 			case '>':
 			case '=':
@@ -137,8 +136,8 @@ public class ASTBuilder {
 		}
 	}
 
-	private int operPriority(CharSequence seq) {
-		return operPriority(seq.charAt(0));
+	private int operatorPriority(CharSequence seq) {
+		return operatorPriority(seq.charAt(0));
 	}
 
 	private boolean isNumeric(String str) {
@@ -150,11 +149,11 @@ public class ASTBuilder {
 		return true;
 	}
 
-	private boolean isOper(CharSequence str) {
+	private boolean isOperator(CharSequence str) {
 		return "<>=+-*".contains(str);
 	}
 
-	private boolean isOper(char c) {
-		return isOper(String.valueOf(c));
+	private boolean isOperator(char c) {
+		return isOperator(String.valueOf(c));
 	}
 }

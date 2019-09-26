@@ -23,26 +23,26 @@ class Relation extends Binary {
 	@Override
 	public long eval() {
 		if (right != null) {
-			long lval = left.eval();
-			long rval = right.eval();
+			long leftVal = left.eval();
+			long rightVal = right.eval();
 
 			switch (op) {
 				case LESS:
-					if (lval < rval) {
+					if (leftVal < rightVal) {
 						return 1;
 					} else {
 						return 0;
 					}
 
 				case GREATER:
-					if (lval > rval) {
+					if (leftVal > rightVal) {
 						return 1;
 					} else {
 						return 0;
 					}
 
 				case EQUAL:
-					if (lval == rval) {
+					if (leftVal == rightVal) {
 						return 1;
 					} else {
 						return 0;
