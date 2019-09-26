@@ -11,10 +11,18 @@ import ExpressionsAST.Expression;
 ...
 ```
 
-Use `ASTBuilder` to build an AST
+Sample expression
 ```java
 String expr = "1 + (26 - 98) * 15 + 777";
+```
 
+Use `Expression.fromString()` to build an AST
+```java
+Expression tree = Expression.fromString(expr);
+```
+
+Or use `ASTBuilder`
+```java
 ASTBuilder builder = new ASTBuilder(expr);
 Expression tree = builder.build();
 ```
