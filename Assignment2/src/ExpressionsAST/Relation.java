@@ -10,6 +10,12 @@ class Relation extends Binary {
 		this.op = op;
 	}
 
+	Relation(Expression left, Op op, Expression right) {
+		this.left = left;
+		this.right = right;
+		this.op = op;
+	}
+
 	public Relation(Term left) {
 		this.left = left;
 	}

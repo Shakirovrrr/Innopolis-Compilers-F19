@@ -4,12 +4,17 @@ class Factor extends Binary {
 	//private Primary left;
 	//private Factor right;
 
-	public Factor(Primary left, Factor right) {
+	Factor(Primary left, Factor right) {
 		this.left = left;
 		this.right = right;
 	}
 
-	public Factor(Primary primary) {
+	Factor(Expression left, Expression right) {
+		this.left = left;
+		this.right = right;
+	}
+
+	Factor(Primary primary) {
 		this.left = primary;
 	}
 
