@@ -9,6 +9,8 @@ class Main {
 		ASTBuilder builder = new ASTBuilder(expr);
 		Expression tree = builder.build();
 
-		System.out.println(tree.eval());
+		Expression tree2 = Expression.fromString(expr);
+
+		System.out.println(tree2.eval());
 	}
 }
