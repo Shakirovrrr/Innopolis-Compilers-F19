@@ -2,10 +2,7 @@ package ExpressionsAST;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
-import java.util.Stack;
+import java.util.*;
 
 public class ASTBuilder {
 	private final String expression;
@@ -31,7 +28,11 @@ public class ASTBuilder {
 			}
 			operator = item.charAt(0);
 
-			computeStack.push(bind(computeStack.pop(), operator, computeStack.pop()));
+			try {
+				computeStack.push(bind(computeStack.pop(), operator, computeStack.pop()));
+			} catch (EmptyStackException e) {
+				throw new InvalidExpressionException("Excess operator in expression.");
+			}
 		}
 
 		return computeStack.pop();
@@ -68,11 +69,17 @@ public class ASTBuilder {
 		}
 		List<String> tokens = tokenizer.getTokens();
 
+		boolean wasNumeric = false;
 		for (String token : tokens) {
 			if (isNumeric(token)) {
+				if (wasNumeric) {
+					throw new InvalidExpressionException("Two numbers in a row with no operator between.");
+				}
 				evalQueue.add(token);
+				wasNumeric = true;
 				continue;
 			}
+			wasNumeric = false;
 
 			if (isOperator(token)) {
 				while (!operators.empty()) {
