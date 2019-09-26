@@ -8,7 +8,7 @@ Import packages
 ```java
 import ExpressionsAST.ASTBuilder;
 import ExpressionsAST.Expression;
-import ExpressionsAST.InvalidExpressionException;
+...
 ```
 
 Use `ASTBuilder` to build an AST
@@ -22,4 +22,5 @@ Expression tree = builder.build();
 Evaluate an expression
 ```java
 long result = tree.eval();
+...
 ```
