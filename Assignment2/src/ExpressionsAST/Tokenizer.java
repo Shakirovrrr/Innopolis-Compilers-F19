@@ -1,4 +1,4 @@
-package SimpleTokenizer;
+package ExpressionsAST;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -7,17 +7,17 @@ import java.io.InputStreamReader;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Tokenizer {
+class Tokenizer {
 	private BufferedReader reader;
 	private List<String> tokens;
 
-	public Tokenizer(InputStream input) {
+	Tokenizer(InputStream input) {
 		InputStreamReader inputReader = new InputStreamReader(input);
 		this.reader = new BufferedReader(inputReader);
 		this.tokens = new LinkedList<>();
 	}
 
-	public void tokenize() throws IOException {
+	void tokenize() throws IOException {
 		int readByte = reader.read();
 		char read;
 		StringBuilder tokenBuf = new StringBuilder();
@@ -57,7 +57,7 @@ public class Tokenizer {
 		flushTokenBuf(tokenBuf);
 	}
 
-	public List<String> getTokens() {
+	List<String> getTokens() {
 		return tokens;
 	}
 

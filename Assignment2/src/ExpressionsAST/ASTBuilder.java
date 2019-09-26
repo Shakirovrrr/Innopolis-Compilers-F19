@@ -1,7 +1,5 @@
 package ExpressionsAST;
 
-import SimpleTokenizer.Tokenizer;
-
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.LinkedList;
@@ -15,14 +13,6 @@ public class ASTBuilder {
 
 	public ASTBuilder(String expression) {
 		this.expression = expression;
-	}
-
-	public Queue<String> getEvalQueue() throws InvalidExpressionException {
-		if (evalQueue == null) {
-			generateEvalQueue();
-		}
-
-		return evalQueue;
 	}
 
 	public Expression build() throws InvalidExpressionException {
