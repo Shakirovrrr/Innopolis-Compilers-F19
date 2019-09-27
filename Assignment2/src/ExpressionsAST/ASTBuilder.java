@@ -15,22 +15,31 @@ public class ASTBuilder {
 	public Expression build() throws InvalidExpressionException {
 		generateEvalQueue();
 
+		// Convert generated reverse polish notation (RPN) into tree
+
 		Stack<Expression> computeStack = new Stack<>();
 		char operator;
 
+		// While RPN queue is not empty, process it
 		String item;
 		while (!evalQueue.isEmpty()) {
 			item = evalQueue.poll();
 
+			// If item is number, create a node of it
+			// and push it to the computing stack
 			while (!isOperator(item)) {
 				computeStack.push(Number.parseInt(item));
 				item = evalQueue.remove();
 			}
 			operator = item.charAt(0);
 
+			// If it is an operator, pick Number nodes from stack
+			// and bind them to the new node
 			try {
 				computeStack.push(bind(computeStack.pop(), operator, computeStack.pop()));
 			} catch (EmptyStackException e) {
+				// If there are no enough numbers in the stack
+				// it means that excess operator appeared in the expression
 				throw new InvalidExpressionException("Excess operator in expression.");
 			}
 		}
@@ -39,6 +48,7 @@ public class ASTBuilder {
 	}
 
 	private Expression bind(Expression left, char operator, Expression right) {
+		// Create new node for tree
 		switch (operator) {
 			case '<':
 				return new Relation(left, Relation.Op.LESS, right);
@@ -58,9 +68,13 @@ public class ASTBuilder {
 	}
 
 	private void generateEvalQueue() throws InvalidExpressionException {
+		// Apply shunting yard algorithm to
+		// create a reverse polish notation
+
 		Stack<Character> operators = new Stack<>();
 		evalQueue = new LinkedList<>();
 
+		// Tokenize input expression
 		ByteArrayInputStream fromString = new ByteArrayInputStream(expression.getBytes());
 		Tokenizer tokenizer = new Tokenizer(fromString);
 		try {
@@ -69,10 +83,15 @@ public class ASTBuilder {
 		}
 		List<String> tokens = tokenizer.getTokens();
 
+		// Process tokens
 		boolean wasNumeric = false;
 		for (String token : tokens) {
+			// If token is numeric
+			// add it to the output queue
 			if (isNumeric(token)) {
 				if (wasNumeric) {
+					// If two numerics appeared in a row
+					// it means that expression is incorrect
 					throw new InvalidExpressionException("Two numbers in a row with no operator between.");
 				}
 				evalQueue.add(token);
@@ -82,7 +101,10 @@ public class ASTBuilder {
 			wasNumeric = false;
 
 			if (isOperator(token)) {
+				// If token is an operator
 				while (!operators.empty()) {
+					// If an operator appeared in operator stack
+					// take it and push two operators according to their priority
 					if (isOperator(operators.peek())) {
 						if (operatorPriority(token) <= operatorPriority(operators.peek())) {
 							evalQueue.add(operators.pop().toString());
