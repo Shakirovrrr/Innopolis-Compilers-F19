@@ -135,7 +135,7 @@ public class ASTBuilder {
 				}
 
 				if (!handled) {
-					throw new InvalidExpressionException("Missing opening bracket or excess closer bracket.");
+					throw new InvalidExpressionException("Missing opening bracket or excess closing bracket.");
 				}
 			}
 
